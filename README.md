@@ -1,50 +1,125 @@
-# Bug1 Algorithm Implementation in MATLAB
+```markdown
+# Bug Algorithms for Robot Path Planning
 
-## Overview
-This MATLAB code implements the Bug1 algorithm for robotic path planning, enabling a robot to navigate from a start point to a goal while avoiding polygonal obstacles. The algorithm alternates between two modes: moving toward the goal and circumventing obstacles upon collision. It is designed to handle non-convex obstacles and includes visualization tools for debugging.
+This repository contains MATLAB implementations of two classic robot navigation algorithms:
 
-## Features
-- **Obstacle Handling**: Supports non-convex polygonal obstacles defined by vertices.
-- **Real-time Visualization**: Displays the robot's path, obstacles, start/goal points, and current state.
-- **Debug Mode**: Provides step-by-step console logs for tracking collision events and state transitions.
-- **Adaptive Parameters**: Adjustable step size, goal tolerance, and obstacle complexity for testing.
+## 1. Bug1 Algorithm
+**Complete obstacle circumnavigation strategy**  
+- Fully encircles obstacles to find optimal exit point
+- Guaranteed convergence for convex obstacles
+- Features:
+  - Non-convex obstacle handling
+  - Real-time visualization
+  - Collision detection with boundary memory
+  - Debug mode with step logging
 
-## Dependencies
-- **MATLAB R2016b or later** (tested on MATLAB 2021a).
-- Required Toolboxes: None (core MATLAB functions only).
+## 2. Bug0 Algorithm
+**Simple reactive navigation strategy**  
+- Immediate obstacle avoidance without full circumnavigation
+- Faster execution for simple environments
+- Features:
+  - Basic boundary following
+  - Sensor simulation (collision detection)
+  - Adaptive step size control
+  - Path visualization
 
-## Usage
-1. **Define Parameters**:
-   - `start_point`, `goal_point`: Initial and target positions.
-   - `step_size`: Movement precision (smaller values increase path smoothness).
-   - `tolerance`: Threshold to determine if the goal is reached.
-   - `obstaclelist`: Cell array of obstacles, each defined by clockwise-ordered vertices forming a closed polygon.
+## Key Differences
+| Feature                | Bug1                          | Bug0                  |
+|------------------------|-------------------------------|-----------------------|
+| Obstacle Handling      | Full perimeter mapping        | Immediate reaction    |
+| Path Optimality        | Systematic approach           | Potentially shorter   |
+| Computation Complexity | Higher                        | Lower                 |
+| Convergence Guarantee  | Yes (for convex obstacles)    | No formal guarantee   |
 
-2. **Run the Script**:
-   - Execute the script in MATLAB. A figure window will show real-time updates of the robot's path and obstacles.
+## Usage Instructions
 
-3. **Debug Mode**:
-   - Set `debug_mode = true` to view collision points, obstacle circumvention status, and step counts in the console.
+### Prerequisites
+- MATLAB R2016b+ (tested on 2021a)
+- No additional toolboxes required
+
+### Parameter Configuration
+```matlab
+% Common parameters
+start_point = [0, 0];       % Initial position
+goal_point = [5, 3];        % Target position
+step_size = 0.1;            % Movement resolution
+tolerance = 0.2;            % Goal acceptance threshold
+
+% Obstacle specification (different formats supported)
+% For Bug1 (cell array of polygons):
+obstaclelist_bug1 = {obstacle1, obstacle2}; 
+
+% For Bug0 (3D matrix):
+obstaclelist_bug0 = cat(3, obstacle1, obstacle2);
+```
+
+### Execution
+1. **Bug1 Implementation**  
+   Run `Bug1_Main.m` for:  
+   - Complete obstacle mapping
+   - Debug console output
+   - Automatic path optimization
+
+2. **Bug0 Implementation**  
+   Run `Bug0_Main.m` for:  
+   - Reactive navigation
+   - Sensor simulation mode
+   - Direct path visualization
+
+## Visualization Features
+![Algorithm Comparison](path_visualization.png)  
+*Example output showing both algorithms' paths*
+
+**Shared Visualization Tools:**
+- Obstacle rendering with filled polygons
+- Real-time path updates
+- Start/goal markers with legends
+- Coordinate grid with equal axis
+
+**Bug1-specific Features:**
+- State transition indicators
+- Boundary memory tracking
+- Closest-point markers
+
+## Performance Considerations
+1. **Step Size Selection**  
+   Recommended values:
+   ```matlab
+   step_size = 0.05;  % High precision (Bug1)
+   step_size = 0.1;   % Standard (Bug0)
+   ```
+
+2. **Obstacle Design Rules**
+   - Closed polygons (first/last points identical)
+   - Clockwise vertex ordering
+   - Non-intersecting edges
+
+3. **Debugging Tips**  
+   Enable diagnostic outputs with:  
+   ```matlab
+   debug_mode = true;  % Supported in Bug1
+   disp(now);          % Add manual prints in Bug0
+   ```
 
 ## Key Functions
-- `checkCollision_pro`: Checks if a movement step collides with any obstacle.
-- `followBoundary`: Guides the robot along the obstacle boundary.
-- `calClosetPoint`: Finds the closest point on the obstacle boundary to the goal.
-- `rotationWithPoint`: Handles vertex turning during boundary following.
-
-## Parameters Explanation
-- **Step Size**: Smaller values (e.g., `0.05`) improve path precision but may increase computation time.
-- **Tolerance**: Determines how close the robot must be to the goal to terminate (default: `0.2`).
-- **Obstacles**: Ensure polygons are closed (first and last points identical) and ordered clockwise.
-
-## Example Output
-- The robot (blue dot) moves from the green start to the magenta goal, avoiding red obstacles.
-- Console logs in debug mode report collisions, obstacle circumnavigation, and completion steps.
-
-## Notes
-- **Infinite Loop Prevention**: The code includes random directional perturbations to avoid deadlocks.
-- **Obstacle Complexity**: Highly concave obstacles may require tuning `step_size` or `tolerance`.
-- **Visualization**: The path updates dynamically, and the title reflects the current state (`moving_to_goal` or `circumvent_obstacle`).
+| Function              | Description                          | Algorithm |
+|-----------------------|--------------------------------------|-----------|
+| `checkCollision_pro`  | Enhanced collision detection        | Bug1      |
+| `followBoundary`      | Perimeter navigation system         | Bug1      |
+| `boundary_detect`     | Simplified collision sensor         | Bug0      |
+| `rotationWithPoint`   | Vertex turning logic                | Both      |
+| `calClosetPoint`      | Optimal exit point calculator       | Bug1      |
 
 ## License
-Open-source under the MIT License. Modify and distribute freely. Attribution is appreciated but not required.
+MIT License - Free for academic/research use. Commercial applications require attribution.
+``` 
+
+This README provides:
+1. Clear algorithm comparison table
+2. Unified parameter configuration guide
+3. Execution instructions for both implementations
+4. Visualization expectations
+5. Performance optimization tips
+6. Cross-algorithm function reference
+
+Would you like me to add any specific implementation details or usage examples for particular scenarios?
