@@ -1,4 +1,3 @@
-```markdown
 # Bug Algorithms for Robot Path Planning
 
 This repository contains MATLAB implementations of two classic robot navigation algorithms:
@@ -34,7 +33,7 @@ This repository contains MATLAB implementations of two classic robot navigation 
 ## Usage Instructions
 
 ### Prerequisites
-- MATLAB R2016b+ (tested on 2021a)
+- MATLAB R2016b+ (tested on 2023b)
 - No additional toolboxes required
 
 ### Parameter Configuration
@@ -42,7 +41,7 @@ This repository contains MATLAB implementations of two classic robot navigation 
 % Common parameters
 start_point = [0, 0];       % Initial position
 goal_point = [5, 3];        % Target position
-step_size = 0.1;            % Movement resolution
+step_size = 0.05;            % Movement resolution
 tolerance = 0.2;            % Goal acceptance threshold
 
 % Obstacle specification (different formats supported)
@@ -55,13 +54,13 @@ obstaclelist_bug0 = cat(3, obstacle1, obstacle2);
 
 ### Execution
 1. **Bug1 Implementation**  
-   Run `Bug1_Main.m` for:  
+   Run `Bug1.m` for:  
    - Complete obstacle mapping
    - Debug console output
    - Automatic path optimization
 
 2. **Bug0 Implementation**  
-   Run `Bug0_Main.m` for:  
+   Run `Bug0.m` for:  
    - Reactive navigation
    - Sensor simulation mode
    - Direct path visualization
