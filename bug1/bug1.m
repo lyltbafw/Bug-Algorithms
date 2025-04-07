@@ -1,7 +1,6 @@
-%% 修复无限循环问题的Bug1算法
 clear; close all; clc;
 
-%% 初始化参数（增加障碍物复杂度测试）
+%% 初始化参数
 start_point = [0, 0];       % 起始点
 goal_point = [10, 10];      % 目标点
 step_size = 0.05;           % 减小步长提高精度
@@ -149,6 +148,12 @@ while norm(current_pos - goal_point) > tolerance
     
     drawnow limitrate;
 end
+current_pos = goal_point;
+path = [path;current_pos];
+set(h_robot, 'XData', current_pos(1), 'YData', current_pos(2));
+set(h_path, 'XData', path(:,1), 'YData', path(:,2));
+title(sprintf('State: %s', status));
+drawnow limitrate;
 goalindex_size = size(path);
 goalindex = goalindex_size(1);
 if debug_mode
